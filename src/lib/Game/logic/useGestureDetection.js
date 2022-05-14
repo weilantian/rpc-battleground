@@ -3,14 +3,19 @@ import { writable } from "svelte/store";
 import Handsfree from "handsfree";
 const useGestureDetection = () => {
   let handsFree = null;
-  const detectedGestureStore = writable("");
+  const detectedGesture = writable("");
+  const modalLoaded = writable(false);
+
+  const handleModalLoaded = () => {
+    modalLoaded.set(true);
+  };
 
   const handleGestureDetected = (event) => {
     const data = event.detail;
     if (!data.hands || !data.hands.gesture) return;
     data.hands.gesture.forEach((gesture) => {
       if (gesture && gesture.name) {
-        detectedGestureStore.set(gesture.name);
+        detectedGesture.set(gesture.name);
       }
     });
   };
@@ -24,11 +29,16 @@ const useGestureDetection = () => {
     handsFree.start();
     loadGesturesCharacteristics();
     document.addEventListener("handsfree-data", handleGestureDetected);
+    document.addEventListener("handsfree-handsModelReady", handleModalLoaded);
   };
 
   const stopGestureDetection = () => {
     handsFree.stop();
     document.removeEventListener("handsfree-data", handleGestureDetected);
+    document.removeEventListener(
+      "handsfree-handsModelReady",
+      handleModalLoaded
+    );
   };
 
   const loadGesturesCharacteristics = () => {
@@ -107,7 +117,12 @@ const useGestureDetection = () => {
       enabled: true,
     });
   };
-  return { detectedGestureStore, startGestureDetection, stopGestureDetection };
+  return {
+    detectedGesture,
+    modalLoaded,
+    startGestureDetection,
+    stopGestureDetection,
+  };
 };
 
 export default useGestureDetection;

@@ -34,7 +34,10 @@
       alignment="right"
     />
   </div>
-  <CountDown service={gameService} />
+  {#if $gameService.matches("countDown")}
+    <CountDown service={gameService} />
+  {/if}
+
   <BattleGround bind:this={battleground} />
   <MakeDecision service={gameService} />
   <div style="width: 300px; height: 300px" bind:this={debugWindow} />

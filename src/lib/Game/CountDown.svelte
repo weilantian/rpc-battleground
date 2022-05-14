@@ -1,5 +1,5 @@
 <script>
-  let count = 3;
+  let count = 4;
   let interval;
   export let service;
   const decreaseCount = () => {
@@ -10,7 +10,7 @@
     }
   };
 
-  interval = setInterval(decreaseCount, 1000);
+  interval = setInterval(decreaseCount, 400);
 </script>
 
 <div><h1>{count}</h1></div>

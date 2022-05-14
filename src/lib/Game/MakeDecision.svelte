@@ -1,28 +1,27 @@
 <script>
-  let detectedGesture = "";
   let webcam;
   export let service;
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
   import useGestureDetection from "./logic/useGestureDetection";
   import { onMount } from "svelte";
-  import { onDestroy, subscribe } from "svelte/internal";
-  const bottom = tweened(-300, {
+  import { onDestroy } from "svelte/internal";
+  const bottom = tweened(-410, {
     duration: 1200,
     easing: cubicOut,
   });
 
-  const { detectedGestureStore, startGestureDetection, stopGestureDetection } =
-    useGestureDetection();
+  const {
+    detectedGesture,
+    modalLoaded,
+    startGestureDetection,
+    stopGestureDetection,
+  } = useGestureDetection();
   onMount(() => {
     startGestureDetection(webcam);
   });
-  const unsuscribe = subscribe(detectedGestureStore, (gesture) => {
-    detectedGesture = gesture;
-  });
 
   onDestroy(() => {
-    unsuscribe();
     stopGestureDetection();
   });
 
@@ -30,7 +29,7 @@
     if (state.matches("makeDecision")) {
       bottom.set(60);
     } else {
-      bottom.set(-300);
+      bottom.set(-410);
     }
   });
 </script>
@@ -38,8 +37,19 @@
 <div style:bottom="{$bottom}px" class="modal">
   <h1>Make Your Move!</h1>
   <div class="container">
-    <div style="width: 320px;" bind:this={webcam} class="webcam" />
-    <div class="move">{detectedGesture}</div>
+    <div style="width: 320px;height:180px;" class="webcam">
+      <div
+        bind:this={webcam}
+        style=" display:{$modalLoaded ? 'block' : 'none'}"
+      />
+
+      <div class="loading">
+        <h3>Please wait!</h3>
+        <p>Loading Gesture Detector...</p>
+      </div>
+    </div>
+
+    <div class="move">{$detectedGesture}</div>
   </div>
 </div>
 
@@ -49,6 +59,13 @@
     display: block;
     text-align: center;
     margin-bottom: 30px;
+  }
+  .loading {
+    flex-direction: column;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .modal {
     display: flex;
@@ -60,7 +77,7 @@
     left: 50%;
 
     width: 60vw;
-    padding: 120px 70px;
+    padding: 68px 70px;
     background-color: colors.$primary;
     border: 5px solid colors.$secondary;
 
