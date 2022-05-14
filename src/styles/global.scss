@@ -1,0 +1,64 @@
+/*
+This game experience is styled using SCSS. The SCSS is automatically
+compiled into CSS by using the Live Sass Compiler plugin installed in the vscode.
+
+Using the SCSS to style allowing me to import styles from other scss files, to
+create a more modular and reusable style system, as well as make the styles more
+organized.
+
+In this global.scss file, all the styles in other modules will be imported, so that
+I only need to link this particular stylesheets in the index.html.
+
+*/
+
+/*
+_reset.scss contains everything need to reset the default styles of the browser.
+*/
+@use "./reset";
+
+/*
+_utils.scss contains utility functions for using in scss files, and useful class for hiding elements.
+*/
+@use "./utils";
+
+/*
+_typography.scss contains all the fonts used across the site.
+ */
+@use "./typography";
+
+/*
+_colors.scss contains all the variables that will be used in the styles.
+*/
+@use "./colors";
+
+:global(body) {
+  // Set the background color of the body to the default primary color defined in _colors.scss file.
+  background-color: colors.$primary;
+  color: white;
+  // Include the default font defines in the _typography.scss file.
+  @include typography.default-font;
+}
+
+.insufficient-width-warning {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: colors.$secondary;
+  transition: all 0.4s;
+}
+
+/*
+The game experience is designed to be viewed on a screen that has a width larger then 940 pixels.
+Audience who access this site on a window that the width is smaller then 940 pixels,
+the insufficient width warning will be rendered.
+ */
+@media (max-width: 940px) {
+  .insufficient-width-warning {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

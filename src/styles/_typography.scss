@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Rubik+Mono+One&display=swap");
+
+// Fonts are in mixins, so I can use @include typography.<font> in the styling context.
+// Predefines the fonts will make sure the design is consistent.
+
+// https://fonts.google.com/specimen/Rubik
+@mixin heading-font {
+  font-family: "Rubik Mono One", sans-serif;
+}
+
+// https://fonts.google.com/specimen/Poppins
+@mixin default-font {
+  font-family: "Poppins", sans-serif;
+}

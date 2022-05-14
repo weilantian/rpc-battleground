@@ -1,0 +1,19 @@
+/*
+Include the sass library for solving math problems.
+ */
+@use "sass:math";
+
+.hide {
+  display: none !important;
+}
+
+$browser-context: 16; // Default
+
+/*
+A Scss function Convert the sizing unit from px to em, which is made
+to allow the audience to change the text size
+without breaking the design.
+ */
+@function em($pixels, $context: $browser-context) {
+  @return #{math.div($pixels, $context)}em;
+}
