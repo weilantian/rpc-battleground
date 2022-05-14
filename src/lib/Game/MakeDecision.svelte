@@ -1,11 +1,14 @@
 <script>
-  let webcam;
-  export let service;
   import { tweened } from "svelte/motion";
   import { cubicOut } from "svelte/easing";
   import useGestureDetection from "./logic/useGestureDetection";
   import { onMount } from "svelte";
   import { onDestroy } from "svelte/internal";
+
+  export let service;
+
+  let webcam;
+
   const bottom = tweened(-410, {
     duration: 1200,
     easing: cubicOut,
@@ -17,6 +20,7 @@
     startGestureDetection,
     stopGestureDetection,
   } = useGestureDetection();
+
   onMount(() => {
     startGestureDetection(webcam);
   });

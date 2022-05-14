@@ -3,10 +3,6 @@ Include the sass library for solving math problems.
  */
 @use "sass:math";
 
-.hide {
-  display: none !important;
-}
-
 $browser-context: 16; // Default
 
 /*

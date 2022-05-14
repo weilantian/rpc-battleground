@@ -1,8 +1,7 @@
 <script>
+  //This file defines the interface and the logic of the game startmenu.
   import { blur } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
-
-  //This file defines the interface and the logic of the game startmenu.
 
   import Button from "./Button.svelte";
 

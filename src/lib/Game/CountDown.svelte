@@ -1,7 +1,9 @@
 <script>
+  export let service;
+
   let count = 4;
   let interval;
-  export let service;
+
   const decreaseCount = () => {
     count -= 1;
     if (count === 0) {

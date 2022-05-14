@@ -1,21 +1,16 @@
 <script>
   import { interpret } from "xstate";
   import { fade } from "svelte/transition";
-  import { onMount } from "svelte";
-  import { onDestroy, setContext, subscribe } from "svelte/internal";
 
-  import useGestureDetection from "./logic/useGestureDetection";
   import StatsBoard from "./StatsBoard.svelte";
   import BattleGround from "./BattleGround.svelte";
   import gameState from "./logic/gameState";
   import CountDown from "./CountDown.svelte";
   import MakeDecision from "./MakeDecision.svelte";
-  let debugWindow;
 
   let battleground;
 
   const gameService = interpret(gameState, { devTools: true }).start();
-
   const gameContext = $gameService.context;
 </script>
 
@@ -40,7 +35,6 @@
 
   <BattleGround bind:this={battleground} />
   <MakeDecision service={gameService} />
-  <div style="width: 300px; height: 300px" bind:this={debugWindow} />
 </div>
 
 <style lang="scss">

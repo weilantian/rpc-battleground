@@ -1,16 +1,14 @@
 <script>
-  import playerAvatar from "../../assets/player-avatar.png";
-  import ValueBar from "./ValueBar.svelte";
-
   import hpIcon from "../../assets/icon-hp.svg";
   import streakIcon from "../../assets/icon-streak.svg";
+  import playerAvatar from "../../assets/player-avatar.png";
+
+  import ValueBar from "./ValueBar.svelte";
 
   /** @type {"left"|"right"} */
   export let alignment = "left";
-
   export let hp = 0;
   export let streak = 0;
-
   export let name;
 </script>
 
