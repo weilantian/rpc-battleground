@@ -1,18 +1,22 @@
 <script>
+  import { interpret } from "xstate";
+
   import Game from "./lib/Game/Game.svelte";
+  import gameState from "./lib/Game/logic/gameState";
 
   import StartMenu from "./lib/StartMenu/StartMenu.svelte";
   // This variable defines weather the game has been started
-  let gameStarted = false;
+
+  const gameService = interpret(gameState, { devTools: true }).start();
 </script>
 
 <main>
-  {#if !gameStarted}
+  {#if $gameService.matches("startMenu")}
     <!-- Only show the StartMenu when the game is started -->
-    <StartMenu on:startGame={() => (gameStarted = true)} />
+    <StartMenu on:startGame={() => gameService.send("START")} />
   {:else}
     <!-- Show the game -->
-    <Game />
+    <Game {gameService} />
   {/if}
 </main>
 

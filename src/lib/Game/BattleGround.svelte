@@ -3,7 +3,7 @@
   import monsterImage from "../../assets/monster.png";
   import gsap from "gsap";
   import DecisionIndicator from "./DecisionIndicator.svelte";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   export let service;
   let monster;
   let player;
@@ -29,6 +29,7 @@
             duration: 0.5,
             x: distanceBetweenPlayerAndMonster,
           })
+          .to(monster, { duration: 0.1, repeat: 5, yoyo: true, x: "-=20" })
           .to(player, {
             duration: 0.5,
             x: 0,
@@ -46,6 +47,7 @@
           duration: 0.5,
           x: -distanceBetweenPlayerAndMonster,
         })
+        .to(player, { duration: 0.1, repeat: 5, yoyo: true, x: "-=20" })
         .to(monster, {
           duration: 0.5,
           x: 0,
@@ -59,11 +61,10 @@
     distanceBetweenPlayerAndMonster = Math.abs(playerX - monsterX);
   };
 
-  onMount(() => {
-    calculateDistanceBetweenCharacters();
-    document.addEventListener("resize", calculateDistanceBetweenCharacters);
-  });
+  onMount(calculateDistanceBetweenCharacters);
 </script>
+
+<svelte:window on:resize={calculateDistanceBetweenCharacters} />
 
 <div class="battleground">
   <div class="player__container">

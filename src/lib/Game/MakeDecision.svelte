@@ -26,10 +26,6 @@
     startGestureDetection(webcam);
   });
 
-  onDestroy(() => {
-    stopGestureDetection();
-  });
-
   let count = 5;
   let interval;
 
@@ -47,9 +43,9 @@
 
       count = $service.context.rounds > 1 ? 3 : 5;
       interval = setInterval(decreaseCount, 1000);
-    } else {
-      bottom.set(-410);
+      return;
     }
+    bottom.set(-410);
   });
 </script>
 

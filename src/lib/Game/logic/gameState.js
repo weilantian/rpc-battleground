@@ -3,7 +3,7 @@ import { createMachine } from "xstate";
 const gameState = createMachine(
   {
     id: "game",
-    initial: "countDown",
+    initial: "gameOver",
 
     context: {
       rounds: 0,
@@ -19,8 +19,14 @@ const gameState = createMachine(
       cpuDecision: "",
       tie: false,
       winner: "",
+      finalWinner: "player",
     },
     states: {
+      startMenu: {
+        on: {
+          START: "countDown",
+        },
+      },
       countDown: {
         on: {
           MAKE_DECISION: {
@@ -33,6 +39,9 @@ const gameState = createMachine(
       },
       makeDecision: {
         on: {
+          STOP_GAME: {
+            target: "gameOver",
+          },
           SHOW_DECISION: {
             target: "showDecision",
             actions: (context, event) => {
@@ -136,11 +145,26 @@ const gameState = createMachine(
             },
             {
               target: "gameOver",
+              actions: (context) => {
+                if (context.playerStats.hp <= 0) {
+                  context.finalWinner = "cpu";
+                } else if (context.cpuStats.hp <= 0) {
+                  context.finalWinner = "player";
+                }
+              },
             },
           ],
         },
       },
-      gameOver: {},
+      gameOver: {
+        on: {
+          RESET_GAME: {
+            target: "resetGame",
+            actions: () => location.reload(),
+          },
+        },
+      },
+      resetGame: {},
     },
   },
   {
@@ -148,6 +172,11 @@ const gameState = createMachine(
       resetMatch: (context, event) => {
         context.tie = false;
         context.winner = "";
+        context.playerStats.hp = 100;
+        context.cpuStats.hp = 100;
+        context.playerStats.streak = 0;
+        context.cpuStats.streak = 0;
+        context.rounds = 0;
       },
     },
   }

@@ -1,8 +1,8 @@
-import { onMount } from "svelte";
 import { writable } from "svelte/store";
 import Handsfree from "handsfree";
 const useGestureDetection = () => {
   let handsFree = null;
+
   const detectedGesture = writable("");
   const modalLoaded = writable(false);
 
@@ -24,9 +24,12 @@ const useGestureDetection = () => {
     handsFree = new Handsfree({
       hands: true,
     });
+
     debugWindow.appendChild(handsFree.debug.$wrap);
     handsFree.showDebugger();
+
     handsFree.start();
+
     loadGesturesCharacteristics();
     document.addEventListener("handsfree-data", handleGestureDetected);
     document.addEventListener("handsfree-handsModelReady", handleModalLoaded);

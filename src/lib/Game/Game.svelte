@@ -7,11 +7,16 @@
   import gameState from "./logic/gameState";
   import CountDown from "./CountDown.svelte";
   import MakeDecision from "./MakeDecision.svelte";
+  import GameOver from "./GameOver.svelte";
 
   let battleground;
 
-  const gameService = interpret(gameState, { devTools: true }).start();
+  export let gameService;
 </script>
+
+{#if $gameService.matches("gameOver")}
+  <GameOver />
+{/if}
 
 <div transition:fade class="game">
   <div class="stats-board-container">
