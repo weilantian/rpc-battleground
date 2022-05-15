@@ -1,17 +1,84 @@
 <script>
   import playerImage from "../../assets/player.png";
   import monsterImage from "../../assets/monster.png";
-  export const attackMonster = () => {
-    alert("Monster attcked");
+  import gsap from "gsap";
+  import DecisionIndicator from "./DecisionIndicator.svelte";
+  import { onMount } from "svelte";
+  export let service;
+  let monster;
+  let player;
+  let distanceBetweenPlayerAndMonster = 0;
+  service.onTransition((state) => {
+    if (state.matches("showDecision")) {
+      setTimeout(() => {
+        if ($service.context.tie) {
+          service.send("TIE");
+          return;
+        }
+        service.send("ATTACK");
+      }, 2000);
+    } else if (state.matches("attack")) {
+      if ($service.context.winner === "player") {
+        gsap
+          .timeline({
+            onComplete: () => {
+              service.send("FINISH_ATTACK");
+            },
+          })
+          .to(player, {
+            duration: 0.5,
+            x: distanceBetweenPlayerAndMonster,
+          })
+          .to(player, {
+            duration: 0.5,
+            x: 0,
+          });
+
+        return;
+      }
+      gsap
+        .timeline({
+          onComplete: () => {
+            service.send("FINISH_ATTACK");
+          },
+        })
+        .to(monster, {
+          duration: 0.5,
+          x: -distanceBetweenPlayerAndMonster,
+        })
+        .to(monster, {
+          duration: 0.5,
+          x: 0,
+        });
+    }
+  });
+
+  const calculateDistanceBetweenCharacters = () => {
+    const playerX = player.getBoundingClientRect().x;
+    const monsterX = monster.getBoundingClientRect().x;
+    distanceBetweenPlayerAndMonster = Math.abs(playerX - monsterX);
   };
+
+  onMount(() => {
+    calculateDistanceBetweenCharacters();
+    document.addEventListener("resize", calculateDistanceBetweenCharacters);
+  });
 </script>
 
 <div class="battleground">
   <div class="player__container">
-    <img class="player" alt="" src={playerImage} />
+    <DecisionIndicator
+      show={$service.matches("showDecision")}
+      decision={$service.context.playerDecision}
+    />
+    <img bind:this={player} class="player" alt="" src={playerImage} />
   </div>
   <div class="monster__container">
-    <img class="monster" alt="" src={monsterImage} />
+    <DecisionIndicator
+      show={$service.matches("showDecision")}
+      decision={$service.context.cpuDecision}
+    />
+    <img bind:this={monster} class="monster" alt="" src={monsterImage} />
   </div>
 </div>
 

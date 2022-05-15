@@ -4,6 +4,7 @@
   import useGestureDetection from "./logic/useGestureDetection";
   import { onMount } from "svelte";
   import { onDestroy } from "svelte/internal";
+  import ValueBar from "./ValueBar.svelte";
 
   export let service;
 
@@ -29,9 +30,22 @@
     stopGestureDetection();
   });
 
+  let count = 5;
+  let interval;
+
+  const decreaseCount = () => {
+    count -= 1;
+    if (count === 0) {
+      clearInterval(interval);
+      service.send({ type: "SHOW_DECISION", decision: $detectedGesture });
+    }
+  };
+
   service.onTransition((state) => {
     if (state.matches("makeDecision")) {
       bottom.set(60);
+      count = 5;
+      interval = setInterval(decreaseCount, 1000);
     } else {
       bottom.set(-410);
     }
@@ -40,6 +54,11 @@
 
 <div style:bottom="{$bottom}px" class="modal">
   <h1>Make Your Move!</h1>
+  <p>In {count}</p>
+  <div style="width: 320px;margin:0 auto;">
+    <ValueBar progress={(count / 5) * 100} />
+  </div>
+
   <div class="container">
     <div style="width: 320px;height:180px;" class="webcam">
       <div
@@ -59,10 +78,10 @@
 
 <style lang="scss">
   @use "../../styles/colors";
-  h1 {
+  h1,
+  p {
     display: block;
     text-align: center;
-    margin-bottom: 30px;
   }
   .loading {
     flex-direction: column;
@@ -78,6 +97,7 @@
     transform: translateX(-50%);
     position: fixed;
     display: flex;
+
     left: 50%;
 
     width: 60vw;
@@ -88,6 +108,7 @@
     border-radius: 24px;
   }
   .container {
+    margin-top: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;

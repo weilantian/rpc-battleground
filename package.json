@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@xstate/inspect": "^0.7.0",
+    "gsap": "^3.10.4",
     "handsfree": "^8.5.1",
     "xstate": "^4.32.1"
   }

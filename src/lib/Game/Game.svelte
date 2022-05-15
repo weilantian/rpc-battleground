@@ -11,21 +11,20 @@
   let battleground;
 
   const gameService = interpret(gameState, { devTools: true }).start();
-  const gameContext = $gameService.context;
 </script>
 
 <div transition:fade class="game">
   <div class="stats-board-container">
     <StatsBoard
       name="You"
-      streak={gameContext.playerStats.streak}
-      hp={gameContext.playerStats.hp}
+      streak={($gameService.context.playerStats.streak / 3) * 100}
+      hp={$gameService.context.playerStats.hp}
       alignment="left"
     />
     <StatsBoard
       name="CPU"
-      streak={gameContext.cpuStats.streak}
-      hp={gameContext.cpuStats.hp}
+      streak={($gameService.context.cpuStats.streak / 3) * 100}
+      hp={$gameService.context.cpuStats.hp}
       alignment="right"
     />
   </div>
@@ -33,7 +32,7 @@
     <CountDown service={gameService} />
   {/if}
 
-  <BattleGround bind:this={battleground} />
+  <BattleGround service={gameService} bind:this={battleground} />
   <MakeDecision service={gameService} />
 </div>
 

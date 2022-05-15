@@ -56,6 +56,7 @@
     position: absolute;
     border-radius: 5px;
     height: 30px;
+    transition: width 0.2s ease-in-out;
   }
 
   .progress-yellow {
