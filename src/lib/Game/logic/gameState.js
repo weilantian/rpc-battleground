@@ -4,7 +4,9 @@ const gameState = createMachine(
   {
     id: "game",
     initial: "countDown",
+
     context: {
+      rounds: 0,
       playerStats: {
         hp: 100,
         streak: 0,
@@ -34,6 +36,7 @@ const gameState = createMachine(
           SHOW_DECISION: {
             target: "showDecision",
             actions: (context, event) => {
+              context.rounds++;
               context.playerDecision = event.decision;
               //Decision can be rock, paper, scissors, make a random decision
               const randomDecision = Math.floor(Math.random() * 3);
@@ -84,16 +87,48 @@ const gameState = createMachine(
               cond: (context) => {
                 if (context.winner === "player") {
                   if (context.playerStats.streak == 3) {
-                    context.playerStats.hp += 10;
+                    context.playerStats.hp = clampValue(
+                      context.playerStats.hp,
+                      10,
+                      100
+                    );
                     context.playerStats.streak = 0;
-                    context.cpuStats.hp -= 40;
-                  } else context.cpuStats.hp -= 30;
+
+                    context.cpuStats.hp = clampValue(
+                      context.cpuStats.hp,
+                      40,
+                      0,
+                      true
+                    );
+                  } else
+                    context.cpuStats.hp = clampValue(
+                      context.cpuStats.hp,
+                      30,
+                      0,
+                      true
+                    );
                 } else {
                   if (context.cpuStats.streak == 3) {
-                    context.cpuStats.hp += 10;
+                    context.playerStats.hp = clampValue(
+                      context.playerStats.hp,
+                      10,
+                      100
+                    );
                     context.cpuStats.streak = 0;
-                    context.playerStats.hp -= 40;
-                  } else context.playerStats.hp -= 30;
+
+                    context.playerStats.hp = clampValue(
+                      context.playerStats.hp,
+                      40,
+                      0,
+                      true
+                    );
+                  } else
+                    context.playerStats.hp = clampValue(
+                      context.playerStats.hp,
+                      30,
+                      0,
+                      true
+                    );
                 }
 
                 return context.playerStats.hp > 0 && context.cpuStats.hp > 0;
@@ -117,5 +152,15 @@ const gameState = createMachine(
     },
   }
 );
+
+const clampValue = (current, value, clamp, decrease) => {
+  if (decrease) {
+    if (current - value < clamp) return clamp;
+    return current - value;
+  } else {
+    if (current + value > clamp) return clamp;
+    return current + value;
+  }
+};
 
 export default gameState;

@@ -44,7 +44,8 @@
   service.onTransition((state) => {
     if (state.matches("makeDecision")) {
       bottom.set(60);
-      count = 5;
+
+      count = $service.context.rounds > 1 ? 3 : 5;
       interval = setInterval(decreaseCount, 1000);
     } else {
       bottom.set(-410);
@@ -56,7 +57,9 @@
   <h1>Make Your Move!</h1>
   <p>In {count}</p>
   <div style="width: 320px;margin:0 auto;">
-    <ValueBar progress={(count / 5) * 100} />
+    <ValueBar
+      progress={(count / ($service.context.rounds > 1 ? 3 : 5)) * 100}
+    />
   </div>
 
   <div class="container">
