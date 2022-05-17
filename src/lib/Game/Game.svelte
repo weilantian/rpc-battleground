@@ -15,7 +15,7 @@
 </script>
 
 {#if $gameService.matches("gameOver")}
-  <GameOver />
+  <GameOver service={gameService} />
 {/if}
 
 <div transition:fade class="game">

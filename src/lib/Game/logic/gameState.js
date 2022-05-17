@@ -3,7 +3,7 @@ import { createMachine } from "xstate";
 const gameState = createMachine(
   {
     id: "game",
-    initial: "gameOver",
+    initial: "startMenu",
 
     context: {
       rounds: 0,
@@ -19,7 +19,7 @@ const gameState = createMachine(
       cpuDecision: "",
       tie: false,
       winner: "",
-      finalWinner: "player",
+      finalWinner: "",
     },
     states: {
       startMenu: {
