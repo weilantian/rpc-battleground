@@ -30,6 +30,9 @@
   let interval;
 
   const decreaseCount = () => {
+    if (!$modalLoaded) {
+      return
+    }
     count -= 1;
     if (count === 0) {
       clearInterval(interval);

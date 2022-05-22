@@ -1,15 +1,11 @@
 <script>
-  import { interpret } from "xstate";
   import { fade } from "svelte/transition";
 
   import StatsBoard from "./StatsBoard.svelte";
   import BattleGround from "./BattleGround.svelte";
-  import gameState from "./logic/gameState";
   import CountDown from "./CountDown.svelte";
   import MakeDecision from "./MakeDecision.svelte";
   import GameOver from "./GameOver.svelte";
-
-  let battleground;
 
   export let gameService;
 </script>
@@ -37,7 +33,7 @@
     <CountDown service={gameService} />
   {/if}
 
-  <BattleGround service={gameService} bind:this={battleground} />
+  <BattleGround service={gameService} />
   <MakeDecision service={gameService} />
 </div>
 

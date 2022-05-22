@@ -5,7 +5,15 @@ const gameState = createMachine(
     id: "game",
     initial: "startMenu",
 
+    on: {
+      PAUSED: {
+        target: "paused",
+      },
+    },
+
     context: {
+      paused: false,
+      voiceOverEnabled: false,
       rounds: 0,
       playerStats: {
         hp: 100,
@@ -22,9 +30,15 @@ const gameState = createMachine(
       finalWinner: "",
     },
     states: {
+      paused: {},
       startMenu: {
         on: {
-          START: "countDown",
+          START: {
+            target: "countDown",
+            actions: (context, event) => {
+              context.voiceOverEnabled = event.voiceOverEnabled;
+            },
+          },
         },
       },
       countDown: {

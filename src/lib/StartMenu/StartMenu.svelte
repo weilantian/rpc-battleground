@@ -4,18 +4,27 @@
   import { createEventDispatcher } from "svelte";
 
   import Button from "./Button.svelte";
+  import A11yCheckBox from "./A11yCheckBox.svelte";
 
   const dispatch = createEventDispatcher();
 
   const handleNewGameButtonClicked = () => {
-    dispatch("startGame");
+    dispatch("startGame", {
+      voiceOverEnabled,
+    });
   };
+
+  let voiceOverEnabled = false;
 </script>
 
 <div transition:blur={{ amount: 10 }} class="home__wrapper">
   <div class="home">
     <h1 class="home__title">Rock Paper Scissors Battleground</h1>
     <div class="home__button-group">
+      <A11yCheckBox
+        selected={voiceOverEnabled}
+        on:toggle={() => (voiceOverEnabled = !voiceOverEnabled)}
+      />
       <Button on:click={handleNewGameButtonClicked} varients="primary"
         >New Game</Button
       >
