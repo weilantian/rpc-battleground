@@ -1,5 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import { fly } from "svelte/transition";
+  import checkMarkIcon from "../../assets/checkmark.svg";
 
   export let selected;
 
@@ -10,28 +12,46 @@
   };
 </script>
 
-<button on:click={onToggleSelect}>
-  <span style:--checkbox-display={selected ? "block" : "none"} /> Enable Voiceover</button
+<button aria-pressed={selected} on:click={onToggleSelect}>
+  <span
+    style="background-color:{selected ? 'white' : 'transparent'}"
+    class="checkbox"
+  >
+    {#if selected}
+      <img
+        src={checkMarkIcon}
+        alt="check mark"
+        transition:fly={{ y: 10, duration: 300 }}
+        class="checked"
+      />
+    {/if}
+  </span> Enable Voiceover Mode</button
 >
 
 <style lang="scss">
   button {
     display: flex;
     align-items: center;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
   }
-  span {
-    width: 32px;
-    height: 32px;
+  .checkbox {
+    border-radius: 8px;
+    margin-right: 12px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #fff;
-    &::after {
-      content: "";
-      display: var(--checkbox-display);
-      background-color: rgb(108, 108, 108);
-      width: 18px;
-      height: 18px;
+    border: 2px solid #fff;
+    > .checked {
+      display: block;
+
+      width: 16px;
+      height: 16px;
     }
   }
 </style>

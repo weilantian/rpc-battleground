@@ -10,6 +10,7 @@
   export let hp = 0;
   export let streak = 0;
   export let name;
+  export let avatarImg = playerAvatar;
 </script>
 
 <div class="stats-board">
@@ -20,7 +21,7 @@
     class="stats-board__container"
   >
     <div class="avatar__wrapper">
-      <img src={playerAvatar} class="avatar" alt="" />
+      <img src={avatarImg} class="avatar" alt="" />
     </div>
     <div
       style="margin-left: {alignment === 'left' ? 18 : 0}px;

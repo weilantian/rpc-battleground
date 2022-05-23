@@ -7,12 +7,17 @@
   import MakeDecision from "./MakeDecision.svelte";
   import GameOver from "./GameOver.svelte";
 
+  import monsterAvatar from "../../assets/monster-avatar.png";
+  import RoundReporter from "./RoundReporter.svelte";
+
   export let gameService;
 </script>
 
 {#if $gameService.matches("gameOver")}
   <GameOver service={gameService} />
 {/if}
+
+<RoundReporter service={gameService} />
 
 <div transition:fade class="game">
   <div class="stats-board-container">
@@ -23,6 +28,7 @@
       alignment="left"
     />
     <StatsBoard
+      avatarImg={monsterAvatar}
       name="CPU"
       streak={($gameService.context.cpuStats.streak / 3) * 100}
       hp={$gameService.context.cpuStats.hp}
