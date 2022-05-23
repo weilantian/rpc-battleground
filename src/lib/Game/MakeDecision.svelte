@@ -5,6 +5,11 @@
   import { onMount } from "svelte";
   import ValueBar from "./ValueBar.svelte";
   import { speak } from "./logic/voiceOver";
+  import { fly } from "svelte/transition";
+
+  import scissorsBtn from "../../assets/scissors-btn.png";
+  import rockBtn from "../../assets/rock-btn.png";
+  import paperBtn from "../../assets/paper-btn.png";
 
   export let service;
 
@@ -119,16 +124,51 @@
       </div>
     </div>
 
-    <div class="move">{$detectedGesture}</div>
+    <div class="move">
+      {#if $detectedGesture === "rock"}
+        <img
+          in:fly={{ duration: 400, x: -20 }}
+          draggable="false"
+          src={rockBtn}
+          alt="Pick Rock"
+        />
+      {:else if $detectedGesture === "paper"}
+        <img
+          in:fly={{ duration: 400, x: -20 }}
+          draggable="false"
+          src={paperBtn}
+          alt="Pick Paper"
+        />
+      {:else if $detectedGesture === "scissors"}
+        <img
+          in:fly={{ duration: 400, x: -20 }}
+          draggable="false"
+          src={scissorsBtn}
+          alt="Pick Scissors"
+        />
+      {/if}
+      {$detectedGesture}
+    </div>
   </div>
 </div>
 
 <style lang="scss">
   @use "../../styles/colors";
+  .move {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 32px;
+  }
   h1,
   p {
     display: block;
     text-align: center;
+  }
+
+  img {
+    width: 120px;
+    height: 120px;
   }
   .loading {
     flex-direction: column;

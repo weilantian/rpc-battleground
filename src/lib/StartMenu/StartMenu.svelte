@@ -60,6 +60,7 @@
     &__title {
       @include typography.heading-font;
       text-align: center;
+      font-size: em(48);
     }
 
     &__button-group {
