@@ -69,6 +69,30 @@
   {/if}
 </main>
 
+<div class="insufficient-width-warning">
+  <p>This game experience requires more space to work properly.</p>
+</div>
+
 <style lang="scss" global>
   @use "./styles/global";
+  @use "./styles/colors";
+  .insufficient-width-warning {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: colors.$secondary;
+    transition: all 0.4s;
+  }
+
+  @media (max-width: 1100px) {
+    .insufficient-width-warning {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 </style>
