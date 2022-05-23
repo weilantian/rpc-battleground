@@ -1,4 +1,5 @@
 import { createMachine } from "xstate";
+import { speak } from "./voiceOver";
 
 const gameState = createMachine(
   {
@@ -12,6 +13,7 @@ const gameState = createMachine(
     },
 
     context: {
+      mouseKeyboardInput: false,
       paused: false,
       voiceOverEnabled: false,
       rounds: 0,
@@ -37,6 +39,7 @@ const gameState = createMachine(
             target: "countDown",
             actions: (context, event) => {
               context.voiceOverEnabled = event.voiceOverEnabled;
+              context.mouseKeyboardInput = event.mouseKeyboardInput;
             },
           },
         },
@@ -45,9 +48,7 @@ const gameState = createMachine(
         on: {
           MAKE_DECISION: {
             target: "makeDecision",
-            actions: () => {
-              console.log("makeDecision");
-            },
+            actions: (context) => {},
           },
         },
       },
@@ -70,6 +71,11 @@ const gameState = createMachine(
               // Check if is a tie
               if (context.playerDecision === context.cpuDecision) {
                 context.tie = true;
+                if (context.voiceOverEnabled) {
+                  speak(
+                    `During this round, you and the monster both chose the ${context.cpuDecision}, it's a tie!`
+                  );
+                }
                 return;
               }
 
@@ -92,6 +98,16 @@ const gameState = createMachine(
                 context.cpuStats.streak++;
                 context.playerStats.streak = 0;
               }
+
+              if (context.voiceOverEnabled) {
+                speak(
+                  `You chose ${context.playerDecision} and the monster chose ${
+                    context.cpuDecision
+                  }, ${
+                    context.winner === "player" ? "you" : "the monster"
+                  } won!`
+                );
+              }
             },
           },
         },
@@ -110,11 +126,6 @@ const gameState = createMachine(
               cond: (context) => {
                 if (context.winner === "player") {
                   if (context.playerStats.streak == 3) {
-                    context.playerStats.hp = clampValue(
-                      context.playerStats.hp,
-                      10,
-                      100
-                    );
                     context.playerStats.streak = 0;
 
                     context.cpuStats.hp = clampValue(
@@ -123,6 +134,12 @@ const gameState = createMachine(
                       0,
                       true
                     );
+
+                    if (context.voiceOverEnabled) {
+                      speak(
+                        `You had won three rounds in a row, the monster lost 40 hp!, now the monster has ${context.cpuStats.hp} HP.`
+                      );
+                    }
                   } else
                     context.cpuStats.hp = clampValue(
                       context.cpuStats.hp,
@@ -130,13 +147,14 @@ const gameState = createMachine(
                       0,
                       true
                     );
+
+                  if (context.voiceOverEnabled) {
+                    speak(
+                      `The monster lost 30 hp!, now the monster has ${context.cpuStats.hp} HP.`
+                    );
+                  }
                 } else {
                   if (context.cpuStats.streak == 3) {
-                    context.playerStats.hp = clampValue(
-                      context.playerStats.hp,
-                      10,
-                      100
-                    );
                     context.cpuStats.streak = 0;
 
                     context.playerStats.hp = clampValue(
@@ -145,6 +163,12 @@ const gameState = createMachine(
                       0,
                       true
                     );
+
+                    if (context.voiceOverEnabled) {
+                      speak(
+                        `Oh no, you had lost three rounds in a row, you lost 40 hp!, now you have ${context.playerStats.hp} HP.`
+                      );
+                    }
                   } else
                     context.playerStats.hp = clampValue(
                       context.playerStats.hp,
@@ -152,6 +176,12 @@ const gameState = createMachine(
                       0,
                       true
                     );
+
+                  if (context.voiceOverEnabled) {
+                    speak(
+                      `You lost 30 hp!, now you have ${context.playerStats.hp} HP.`
+                    );
+                  }
                 }
 
                 return context.playerStats.hp > 0 && context.cpuStats.hp > 0;
@@ -162,8 +192,18 @@ const gameState = createMachine(
               actions: (context) => {
                 if (context.playerStats.hp <= 0) {
                   context.finalWinner = "cpu";
+                  if (context.voiceOverEnabled) {
+                    speak(
+                      `You lost all your HP, the monster won the game! Wish you luck next time!`
+                    );
+                  }
                 } else if (context.cpuStats.hp <= 0) {
                   context.finalWinner = "player";
+                  if (context.voiceOverEnabled) {
+                    speak(
+                      `The monster lost all the HP, you won the game! Congratulations!`
+                    );
+                  }
                 }
               },
             },

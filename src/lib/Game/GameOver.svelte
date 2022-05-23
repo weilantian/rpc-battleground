@@ -6,26 +6,37 @@
   import Button from "../StartMenu/Button.svelte";
 </script>
 
-<div transition:fade>
-  <h1>Game Over (￣▽￣)</h1>
-  {#if $service.context.finalWinner === "player"}
-    <p>You win!</p>
-    <img class="character" alt="" src={playerImage} />
-  {:else}
-    <p>You loose!</p>
-    <img class="character" alt="" src={monsterImage} />
-  {/if}
-  <Button on:click={() => service.send("RESET_GAME")}>Back to startmenu</Button>
+<div class="wrapper" transition:fade>
+  <div class="container">
+    <h1>Game Over</h1>
+    {#if $service.context.finalWinner === "player"}
+      <p class="text">You win!</p>
+    {:else}
+      <p class="text">You loose!</p>
+    {/if}
+    <Button on:click={() => service.send("RESET_GAME")}
+      >Back to startmenu</Button
+    >
+  </div>
 </div>
 
 <style lang="scss">
   @use "../../styles/colors";
-  div {
-    z-index: 20;
-    justify-content: center;
+  .text {
+    font-size: 64px;
+  }
+  .wrapper {
+    > .container {
+      height: 420px;
+      justify-content: space-between;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    z-index: 20;
     background-color: colors.$primary;
     position: fixed;
     width: 100vw;
@@ -34,15 +45,10 @@
     top: 0;
   }
   h1 {
-    font-size: 48px;
+    font-size: 38px;
   }
   p {
     margin-top: 12px;
     font-size: 26px;
-  }
-
-  .character {
-    width: 240px;
-    height: auto;
   }
 </style>

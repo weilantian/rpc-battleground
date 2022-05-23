@@ -12,13 +12,14 @@
   };
 </script>
 
-<button aria-pressed={selected} on:click={onToggleSelect}>
+<button role="switch" aria-checked={selected} on:click={onToggleSelect}>
   <span
     style="background-color:{selected ? 'white' : 'transparent'}"
     class="checkbox"
   >
     {#if selected}
       <img
+        aria-hidden="true"
         src={checkMarkIcon}
         alt="check mark"
         transition:fly={{ y: 10, duration: 300 }}

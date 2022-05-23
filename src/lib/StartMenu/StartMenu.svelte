@@ -5,30 +5,37 @@
 
   import Button from "./Button.svelte";
   import A11yCheckBox from "./A11yCheckBox.svelte";
+  import GameModeSwitcher from "./GameModeSwitcher.svelte";
+
+  let gameMode = "webcam";
 
   const dispatch = createEventDispatcher();
+
+  let voiceOverEnabled = false;
 
   const handleNewGameButtonClicked = () => {
     dispatch("startGame", {
       voiceOverEnabled,
+      mouseKeyboardInput: gameMode === "mouse",
     });
   };
-
-  let voiceOverEnabled = false;
 </script>
 
 <div transition:blur={{ amount: 10 }} class="home__wrapper">
-  <div class="home">
+  <div role="menu" class="home">
     <h1 class="home__title">Rock Paper Scissors Battleground</h1>
     <div class="home__button-group">
       <A11yCheckBox
         selected={voiceOverEnabled}
         on:toggle={() => (voiceOverEnabled = !voiceOverEnabled)}
       />
+      <GameModeSwitcher
+        on:toggle={(e) => (gameMode = e.detail.gameMode)}
+        {gameMode}
+      />
       <Button on:click={handleNewGameButtonClicked} varients="primary"
-        >New Game</Button
+        >START</Button
       >
-      <Button>Billboard</Button>
     </div>
   </div>
 </div>

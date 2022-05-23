@@ -3,8 +3,8 @@
   import { cubicOut } from "svelte/easing";
   import useGestureDetection from "./logic/useGestureDetection";
   import { onMount } from "svelte";
-  import { onDestroy } from "svelte/internal";
   import ValueBar from "./ValueBar.svelte";
+  import { speak } from "./logic/voiceOver";
 
   export let service;
 
@@ -25,13 +25,15 @@
   onMount(() => {
     startGestureDetection(webcam);
   });
-
+  let totalCounts = 5;
   let count = 5;
   let interval;
+  let gameStartedReported = false;
+  let gestureIsClearReported = false;
 
   const decreaseCount = () => {
     if (!$modalLoaded) {
-      return
+      return;
     }
     count -= 1;
     if (count === 0) {
@@ -44,21 +46,64 @@
     if (state.matches("makeDecision")) {
       bottom.set(60);
 
-      count = $service.context.rounds > 1 ? 3 : 5;
+      count = totalCounts = $service.context.rounds > 1 ? 3 : 5;
+      if ($service.context.voiceOverEnabled) {
+        if ($service.context.rounds == 0) {
+          count = totalCounts = 15;
+        } else {
+          count = totalCounts = 10;
+        }
+      }
+
       interval = setInterval(decreaseCount, 1000);
+
+      if (
+        state.context.voiceOverEnabled &&
+        $modalLoaded &&
+        $service.context.rounds > 0
+      ) {
+        speak(
+          "It's another round. Show you decition by presenting your hand gesture. "
+        );
+      }
       return;
     }
     bottom.set(-410);
   });
+
+  $: {
+    if (
+      $modalLoaded &&
+      !gameStartedReported &&
+      $service.context.voiceOverEnabled
+    ) {
+      gameStartedReported = true;
+      speak(
+        "The game has now started. Show you decition by presenting your hand gesture, rock, paper or scissors."
+      );
+    }
+  }
+
+  $: {
+    if (
+      service.state.value === "makeDecision" &&
+      service.state.context.voiceOverEnabled &&
+      $detectedGesture &&
+      !gestureIsClearReported
+    ) {
+      gestureIsClearReported = true;
+      speak(
+        `Awesome, the website see you hand clearly, hold your hand and make your decition in 5 seconds.`
+      );
+    }
+  }
 </script>
 
 <div style:bottom="{$bottom}px" class="modal">
   <h1>Make Your Move!</h1>
   <p>In {count}</p>
   <div style="width: 320px;margin:0 auto;">
-    <ValueBar
-      progress={(count / ($service.context.rounds > 1 ? 3 : 5)) * 100}
-    />
+    <ValueBar progress={(count / totalCounts) * 100} />
   </div>
 
   <div class="container">

@@ -61,6 +61,7 @@
         gameService.send({
           type: "START",
           voiceOverEnabled: e.detail.voiceOverEnabled,
+          mouseKeyboardInput: e.detail.mouseKeyboardInput,
         })}
     />
   {:else}

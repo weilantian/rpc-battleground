@@ -14,11 +14,12 @@
   button {
     cursor: pointer;
     margin-top: em(24);
+
     color: white;
     border: 4px solid colors.$secondary;
     @include typography.heading-font;
-    width: em(250);
-    padding: em(16) 0;
+    min-width: em(250);
+    padding: em(16) em(20);
     font-size: em(24);
     background-color: transparent;
     border-radius: 24px;

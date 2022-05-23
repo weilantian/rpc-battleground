@@ -20,7 +20,9 @@
 </script>
 
 {#if isShow}
-  <h1 transition:fly={{ y: 30, duration: 800 }}>{text}</h1>
+  <h1 transition:fly={{ y: 30, duration: 800 }}>
+    {text}
+  </h1>
 {/if}
 
 <style lang="scss">

@@ -9,6 +9,7 @@
 
   import monsterAvatar from "../../assets/monster-avatar.png";
   import RoundReporter from "./RoundReporter.svelte";
+  import MakeDecisionMouse from "./MakeDecisionMouse.svelte";
 
   export let gameService;
 </script>
@@ -40,7 +41,11 @@
   {/if}
 
   <BattleGround service={gameService} />
-  <MakeDecision service={gameService} />
+  {#if !$gameService.context.mouseKeyboardInput}
+    <MakeDecision service={gameService} />
+  {:else}
+    <MakeDecisionMouse service={gameService} />
+  {/if}
 </div>
 
 <style lang="scss">
