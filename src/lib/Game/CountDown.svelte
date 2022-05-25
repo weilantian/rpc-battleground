@@ -1,5 +1,5 @@
 <!--
-  This component will be mount everytime before each round started, to start a countdown.
+  This component will be mount every time before each round started, to start a countdown.
 -->
 <script>
   export let service;
@@ -10,7 +10,7 @@
   const decreaseCount = () => {
     count -= 1;
     if (count === 0) {
-      // When the count reaches 0, tells the state machine to transition to 'makeDecition' phease.
+      // When the count reaches 0, tells the state machine to transition to 'makeDecision' phase.
       clearInterval(interval);
       service.send("MAKE_DECISION");
     }
@@ -24,7 +24,7 @@
 
 <style>
   /*
-  Position the Coutdown indicator in the center of the screen.
+  Position the count down indicator in the center of the screen.
   */
   div {
     display: flex;

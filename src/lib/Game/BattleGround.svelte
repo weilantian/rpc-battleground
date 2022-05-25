@@ -1,7 +1,7 @@
 <!-- The components contains the characters as well as the attacking animations of the game. -->
 <script>
   /* Import the onMount hook from the svelte. the function passed in the 
-  parametor of the onMount function will run once this component is mounted
+  parameter of the onMount function will run once this component is mounted
   */
   import { onMount } from "svelte";
 
@@ -13,16 +13,16 @@
   import gsap from "gsap";
 
   /* 
-  The DecitionIndicator component renders a small circular view with a icon in the center,
-  which uses to indicates the decition in each round made by the cpu as well as thhe player
+  The DecisionIndicator component renders a small circular view with a icon in the center,
+  which uses to indicates the decision in each round made by the cpu as well as the player
   */
   import DecisionIndicator from "./DecisionIndicator.svelte";
 
   // Import the state machine service from the parent component.
   export let service;
 
-  // Defines the monster and player variables, which will be binded to the html elements of two characters.
-  // This will make these to variables work as the refernece of the html elements.
+  // Defines the monster and player variables, which will be bind to the html elements of two characters.
+  // This will make these to variables work as the reference of the html elements.
   // i.e. monster === document.querySelector('.monster')
   let monster;
   let player;
@@ -35,10 +35,10 @@
 
   service.onTransition((state) => {
     /*
-    Once the phease of the game is 'showDecision',
+    Once the phase of the game is 'showDecision',
     it will tells the state machine (based on the context which shows who won the game)
-    to transition to the countDown phease if it is a tie,
-    otherwise, transition to playing the attacking animation phease if not.
+    to transition to the countDown phase if it is a tie,
+    otherwise, transition to playing the attacking animation phase if not.
     */
     if (state.matches("showDecision")) {
       setTimeout(() => {
@@ -122,7 +122,7 @@
     distanceBetweenPlayerAndMonster = Math.abs(playerX - monsterX);
   };
 
-  // Run calculaueDistanceBetweenCharacters function on the component is mounted.
+  // Run calculateDistanceBetweenCharacters function on the component is mounted.
   onMount(calculateDistanceBetweenCharacters);
 </script>
 
@@ -133,16 +133,16 @@
 
 <div class="battleground">
   <div class="player__container">
-    <!-- Show the decition made by the player -->
+    <!-- Show the decision made by the player -->
     <DecisionIndicator
       show={$service.matches("showDecision")}
       decision={$service.context.playerDecision}
     />
-    <!--  Bind html to a variable in Svelte equilivent to document.querySelector(...) -->
+    <!--  Bind html to a variable in Svelte equivalent to document.querySelector(...) -->
     <img bind:this={player} class="player" alt="" src={playerImage} />
   </div>
   <div class="monster__container">
-    <!-- Show the decition made by the competitor -->
+    <!-- Show the decision made by the competitor -->
     <DecisionIndicator
       show={$service.matches("showDecision")}
       decision={$service.context.cpuDecision}

@@ -1,4 +1,7 @@
+<!-- This is a component which used to indicate the move made by the characters in the game. 
+-->
 <script>
+  //Import the icons from the assets folder.
   import rockIcon from "../../assets/icons/icon-rock-sm.svg";
   import paperIcon from "../../assets/icons/icon-paper-sm.svg";
   import scissorsIcon from "../../assets/icons/icon-scissors-sm.svg";
@@ -12,8 +15,10 @@
   export let show;
 </script>
 
+<!-- Utilizes the if else syntax of Svelte to only present the indicator in "showDecision" phase of the game. -->
 {#if show}
   <div transition:fly={{ x: 0, y: 60 }} class="container">
+    <!-- Use the gesture icon to indicate which gesture did the character choose. -->
     {#if decision === "rock"}
       <img alt="rock" src={rockIcon} />
     {:else if decision === "paper"}
