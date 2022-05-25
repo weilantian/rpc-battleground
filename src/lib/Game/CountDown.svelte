@@ -1,3 +1,6 @@
+<!--
+  This component will be mount everytime before each round started, to start a countdown.
+-->
 <script>
   export let service;
 
@@ -7,17 +10,22 @@
   const decreaseCount = () => {
     count -= 1;
     if (count === 0) {
+      // When the count reaches 0, tells the state machine to transition to 'makeDecition' phease.
       clearInterval(interval);
       service.send("MAKE_DECISION");
     }
   };
 
+  // Use set interval function to decrease count each 400ms.
   interval = setInterval(decreaseCount, 400);
 </script>
 
 <div><h1>{count}</h1></div>
 
 <style>
+  /*
+  Position the Coutdown indicator in the center of the screen.
+  */
   div {
     display: flex;
     position: fixed;

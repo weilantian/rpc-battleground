@@ -1,6 +1,8 @@
 import { createMachine } from "xstate";
 import { speak } from "./voiceOver";
 
+//state is the phase of the game
+
 const gameState = createMachine(
   {
     id: "game",

@@ -34,7 +34,10 @@
   import StartMenu from "./lib/StartMenu/StartMenu.svelte";
   // This variable defines weather the game has been started
 
-  // TODO: Expalin what does it works
+  /*
+  Uses Xstate's interpret function to wrap the state machine into a trackable gameService,
+  all the components are able to track the changes in global state.
+  */
   const gameService = interpret(gameState, { devTools: true }).start();
 </script>
 
@@ -69,6 +72,7 @@
   {/if}
 </main>
 
+<!-- A warning will show up in user's browser if the width of the browser is insuffient for the game experience   -->
 <div class="insufficient-width-warning">
   <p>This game experience requires more space to work properly.</p>
 </div>
@@ -88,6 +92,10 @@
     transition: all 0.4s;
   }
 
+  /* 
+  The warning modal implements CSS's media query to show the 
+  warning only when the screen is smaller than 1100px.
+   */
   @media (max-width: 1100px) {
     .insufficient-width-warning {
       display: flex;
