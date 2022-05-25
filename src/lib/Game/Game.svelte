@@ -21,6 +21,7 @@ The pop-up asking user's decision in each round will showing up in this componen
   import GameOver from "./GameOver.svelte";
 
   // Import all the images which will be used;
+  import playerAvatar from "../../assets/player-avatar.png";
   import monsterAvatar from "../../assets/monster-avatar.png";
   import RoundReporter from "./RoundReporter.svelte";
   import MakeDecisionMouse from "./MakeDecisionMouse.svelte";
@@ -44,6 +45,7 @@ The pop-up asking user's decision in each round will showing up in this componen
       Specify the alignment of the stats board to organize the infos in a tidy manner.
      -->
     <StatsBoard
+      avatarImg={playerAvatar}
       name="You"
       streak={($gameService.context.playerStats.streak / 3) * 100}
       hp={$gameService.context.playerStats.hp}

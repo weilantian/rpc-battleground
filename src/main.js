@@ -6,16 +6,15 @@ import { inspect } from "@xstate/inspect";
 This file is the entry point of the whole website. 🚀
 
 The first version of the website was built using pure css, html and css . 🤔However, I noticed that
-it is hard to reflect changes of the variable defined in javascript directly in the html dom. 
+it is hard to reflect changes of the variable defined in javascript directly in the html DOM. 
 
 For example, when the player was attacked in the game, the UI elements that indicates the hit points (HP)
 of the character should be updated and animated using complex javascript codes.
  
-I found theSvelte framework extremely helpful for this project, as it automatically reflect 
-the changes of variables in javascript in the dom.
+I found the Svelte framework extremely helpful for this project, as it automatically reflect 
+the changes of variables in javascript to the DOM.
 
 This work like  🪄🪄magic, check this example.
-
 https://svelte.dev/examples/reactive-declarations
 
 Svelte also helps me to arrange reusable html chunks into components, so that I can split complex dom elements
@@ -33,7 +32,7 @@ if (process.env.NODE_ENV === "development") {
   });
 }
 
-// Mount the Svelte application onto the dom.
+// Mount the Svelte application onto the DOM.
 const app = new App({
   target: document.getElementById("app"),
 });

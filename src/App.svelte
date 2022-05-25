@@ -5,8 +5,10 @@
   In Svelte, a component  consists the script,  layout and styling of a specific functional part of a website.
   It is defined in a .svelte file just like this one.
 
-  XState is another really helpful library. It allows me to define the overall flow of the game.
-  Which makes everything is trackable. I am not a state machine expert, but I know that
+  XState is another really helpful library. 
+  It allows me to defines all the expected phases and the logic during the transition between each phase of the game.
+
+  I am not a state machine expert, but I know that
   state machine is something that game developer always use to track the game state in a game.
 
   XState brings state machine onto the web, and it works great with Svelte.
@@ -35,8 +37,9 @@
   // This variable defines weather the game has been started
 
   /*
-  Uses XState's interpret function to wrap the state machine into a trackable gameService,
-  all the components are able to track the changes in global state.
+  Uses XState's interpret function to wrap the state machine into a trackable service,
+  all the components are able to track the changes of the context and states.
+  It pass down to all the components as a 'single source of truth' to all the Svelte components.
   */
   const gameService = interpret(gameState, { devTools: true }).start();
 </script>
