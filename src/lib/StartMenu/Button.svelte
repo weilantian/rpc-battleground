@@ -1,9 +1,13 @@
+<!-- The button element which is designed to be reused. -->
 <script>
+  // The appearance of the button can be customized by specifying the variant.
+
   /** @type {"default"|"primary"} */
-  export let varients = "default";
+  export let variant = "default";
 </script>
 
-<button class:primary={varients === "primary"} on:click>
+<!-- Only applying primary class on the button element when the variant if set to primary -->
+<button class:primary={variant === "primary"} on:click>
   <slot />
 </button>
 

@@ -1,28 +1,39 @@
+<!-- The is the widget for user to choose 
+  wether they want to play the game using a webcam or
+  with mouse and keyboard.
+-->
 <script>
   import mouseIcon from "../../assets/mouse.svg";
   import webcamIcon from "../../assets/webcam.svg";
-  import { fly } from "svelte/transition";
-  import { createEventDispatcher } from "svelte";
 
   export let gameMode;
 
-  const dispatch = createEventDispatcher();
-
+  // When the button is clicked, toggle the gameMode.
   const toggleGameMode = () => {
     gameMode = gameMode === "mouse" ? "webcam" : "mouse";
-    dispatch("toggle", { gameMode });
   };
 </script>
 
+<!-- The button is used to toggle between two modes, which works like a switch. 
+  That's why the role of the button has been set to the switch. The aria-checked attributes
+  will let the screen reader to read out wether the switch is toggled.
+-->
 <button
   id="toggle-game-mode"
   on:click={toggleGameMode}
   class="switcher"
   role="switch"
-  aria-label="Enable webcam gesture dection"
+  aria-label="Enable webcam gesture decision"
   aria-checked={gameMode === "webcam"}
 >
   GameMode <div class="wrapper">
+    <!-- Screen readers users should only be able 
+      to select the game mode by toggling the switch, 
+      hence the elements inside the switch should be unseletcbale
+      so that the user will be correctly guided to the switch element.
+
+      Set the tabindex to -1, to make the inner element 
+      unselective when using a screen reader -->
     <div
       role="radio"
       tabindex="-1"
@@ -38,7 +49,7 @@
     </div>
     <div
       role="radio"
-      tabindex="0"
+      tabindex="-1"
       data-value="Webcam"
       class="item"
       class:selected={gameMode === "webcam"}

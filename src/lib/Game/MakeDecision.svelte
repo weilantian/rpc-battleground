@@ -37,6 +37,7 @@
   import rockIcon from "../../assets/rock-btn.png";
   import paperIcon from "../../assets/paper-btn.png";
 
+  // The gameService interpreting the game service is pass down from the parent component.
   export let service;
 
   /*
@@ -190,7 +191,7 @@
 </script>
 
 <!-- Bind the value of the bottom variable to the bottom variable of the style of the pop-up. -->
-<div style:bottom="{$bottom}px" class="modal">
+<div role="dialog" style:bottom="{$bottom}px" class="modal">
   <h1>Make Your Move!</h1>
   <!-- The count will be showing in this p tag, using {} syntax of Svelte to 
     dynamically render the value of the count overtime the count changes

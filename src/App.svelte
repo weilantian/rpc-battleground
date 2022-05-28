@@ -34,6 +34,7 @@
   The StartMenu component 
   */
   import StartMenu from "./lib/StartMenu/StartMenu.svelte";
+  import How2Play from "./lib/StartMenu/How2Play/How2Play.svelte";
   // This variable defines weather the game has been started
 
   /*
@@ -61,8 +62,15 @@
 
    https://svelte.dev/tutorial/if-blocks
    -->
-  {#if $gameService.matches("startMenu")}
+
+  <How2Play
+    service={gameService}
+    isShow={$gameService.matches("showingTutorial")}
+  />
+
+  {#if $gameService.matches("startMenu") || $gameService.matches("showingTutorial")}
     <StartMenu
+      on:showManual={() => gameService.send("TUTORIAL")}
       on:startGame={(e) =>
         gameService.send({
           type: "START",
