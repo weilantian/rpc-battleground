@@ -247,7 +247,7 @@
           alt="Pick Scissors"
         />
       {/if}
-      {$detectedGesture}
+      {$detectedGesture ? $detectedGesture : ""}
     </div>
   </div>
 </div>
